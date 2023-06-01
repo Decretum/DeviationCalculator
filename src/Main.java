@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 public class Main {
 
-    private static final String SOLUTION = "1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16";
+    private static final String SOLUTION = "12 13 7 9 10 11 14 5 15 3 2 8 4 16 1 6";
 
     private static int calculateDeviation(String sequence) {
         String[] pieces = sequence.split(" ");
@@ -16,21 +16,35 @@ public class Main {
 
         for (int x = 0; x < pieces.length; x++) {
             iMap.put(pieces[x], x);
+        }
+        for (int x = 0; x < solution.length; x++) {
             sMap.put(solution[x], x);
         }
 
         int totalDeviation = 0;
 
-        for (int x = 0; x < pieces.length; x++) {
-            totalDeviation += Math.abs(iMap.get(pieces[x]) - sMap.get(pieces[x]));
+        // Fastest cars
+        for (int x = 0; x < 3; x++) {
+            String guessedFastestCar = pieces[x];
+            int guessedPosition = x;
+            int actualPosition = sMap.get(guessedFastestCar);
+            totalDeviation += Math.abs(guessedPosition - actualPosition);
+        }
+
+        // Slowest cars
+        for (int x = 0; x < 3; x++) {
+            String guessedSlowestCar = pieces[pieces.length - 3 + x];
+            int guessedPosition = solution.length - 1 - x;
+            int actualPosition = sMap.get(guessedSlowestCar);
+            totalDeviation += Math.abs(guessedPosition - actualPosition);
         }
 
         return totalDeviation;
     }
 
     private static void validateInput(String[] pieces) {
-        if (pieces.length != 16) {
-            throw new RuntimeException("Invalid input - expected 16 sequence elements but only found " + pieces.length);
+        if (pieces.length != 6) {
+            throw new RuntimeException("Invalid input - expected 6 sequence elements but only found " + pieces.length);
         }
 
         for (String piece : pieces) {
@@ -41,7 +55,7 @@ public class Main {
             }
         }
     }
-    
+
     public static void main(String[] args) throws Exception {
         BufferedReader bufferedReader = new BufferedReader(new FileReader("input/scores.txt"));
         String line = bufferedReader.readLine();
