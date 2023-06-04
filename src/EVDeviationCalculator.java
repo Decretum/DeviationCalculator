@@ -1,8 +1,9 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.HashMap;
+import java.util.Map;
 
-public class Main {
+public class EVDeviationCalculator {
 
     private static final String SOLUTION = "12 13 7 9 10 11 14 5 15 3 2 8 4 16 1 6";
 
@@ -56,14 +57,21 @@ public class Main {
         }
     }
 
+    private static void printSortedAscending(HashMap<String, Integer> scores) {
+        scores.entrySet().stream().sorted(Map.Entry.comparingByValue()).forEach(entry -> System.out.println(entry.getKey() + ": " + entry.getValue()));
+    }
+
     public static void main(String[] args) throws Exception {
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("input/scores.txt"));
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("input/ev_responses.txt"));
+        HashMap<String, Integer> scores = new HashMap<>();
         String line = bufferedReader.readLine();
         while (line != null && !line.isEmpty()) {
             String name = line;
             int score = calculateDeviation(bufferedReader.readLine());
-            System.out.println(name + ": " + score);
+            scores.put(name, score);
             line = bufferedReader.readLine();
         }
+
+        printSortedAscending(scores);
     }
 }
